@@ -95,6 +95,7 @@ export interface Employee {
 export interface CreateEmployeePayload {
   firstName: string;
   lastName?: string;
+  employeeId?: string;
   roleSlug?: "employee" | "manager" | "hr";
   password?: string;
   departmentId?: string;

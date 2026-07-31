@@ -29,6 +29,16 @@ export type DesignationFormValues = z.infer<typeof designationSchema>;
 export const employeePersonalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
+  employeeId: z
+    .string()
+    .trim()
+    .optional()
+    .refine(
+      (value) =>
+        !value ||
+        (value.length >= 2 && value.length <= 30 && /^[A-Za-z0-9_-]+$/.test(value)),
+      { message: "Employee ID must be 2–30 characters (letters, numbers, _ or -)" }
+    ),
   officialEmail: z.string().email("Valid email required"),
   personalEmail: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional(),

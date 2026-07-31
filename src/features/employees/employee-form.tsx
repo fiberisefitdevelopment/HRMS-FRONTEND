@@ -42,6 +42,7 @@ function toFormValues(employee?: Employee): CreateEmployeeFormValues {
   return {
     firstName: employee.firstName,
     lastName: employee.lastName ?? "",
+    employeeId: employee.employeeId ?? "",
     officialEmail: employee.officialEmail ?? employee.email,
     personalEmail: employee.personalEmail ?? "",
     phone: employee.phone ?? "",
@@ -135,6 +136,15 @@ export function EmployeeForm({ employee, isLoading, onSubmit }: EmployeeFormProp
               <Label>Last Name</Label>
               <Input {...register("lastName")} />
             </div>
+            {employee && (
+              <div className="space-y-2">
+                <Label>Employee ID *</Label>
+                <Input {...register("employeeId")} placeholder="e.g. FR0001" />
+                {errors.employeeId && (
+                  <p className="text-xs text-destructive">{errors.employeeId.message}</p>
+                )}
+              </div>
+            )}
             <div className="space-y-2">
               <Label>Official Email *</Label>
               <Input type="email" {...register("officialEmail")} />

@@ -30,6 +30,9 @@ export function toUpdateEmployeePayload(values: CreateEmployeeFormValues): Updat
   const { roleSlug, ...rest } = values;
   void roleSlug;
   const cleaned = cleanFormValues(rest) as UpdateEmployeePayload;
+  if (values.employeeId?.trim()) {
+    cleaned.employeeId = values.employeeId.trim().toUpperCase();
+  }
   if (!values.shiftId) {
     return { ...cleaned, shiftId: null };
   }
