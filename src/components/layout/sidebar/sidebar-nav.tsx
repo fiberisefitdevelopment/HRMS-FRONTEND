@@ -58,23 +58,23 @@ function NavItemLabel({
   collapsed,
   depth = 0,
   showChevron = false,
+  selected = false,
 }: {
   item: NavItem;
   collapsed?: boolean;
   depth?: number;
   showChevron?: boolean;
+  selected?: boolean;
 }) {
-  const pathname = usePathname();
-  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
   const Icon = item.icon;
 
   return (
     <div
       className={cn(
         "flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-        isActive
-          ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-          : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+        selected
+          ? "bg-sidebar-primary font-medium text-sidebar-primary-foreground"
+          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         depth > 0 && "ml-4"
       )}
     >
@@ -107,11 +107,14 @@ function NavItemComponent({
 }) {
   const pathname = usePathname();
   const hasChildren = item.children && item.children.length > 0;
-  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+  const sectionActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+  // Leaf items highlight only on an exact match so /employees does not stay
+  // selected on /employees/new. A collapsed parent stands in for its children.
+  const selected = hasChildren ? Boolean(collapsed && sectionActive) : pathname === item.href;
 
   if (hasChildren && !collapsed) {
     return (
-      <Collapsible defaultOpen={isActive}>
+      <Collapsible defaultOpen={sectionActive}>
         <div className="flex w-full items-center">
           <CollapsibleTrigger asChild>
             <button type="button" className="group min-w-0 flex-1 text-left">
@@ -137,7 +140,7 @@ function NavItemComponent({
   const link = (
     <div className="group flex w-full items-center">
       <Link href={item.href} className="min-w-0 flex-1">
-        <NavItemLabel item={item} collapsed={collapsed} depth={depth} />
+        <NavItemLabel item={item} collapsed={collapsed} depth={depth} selected={selected} />
       </Link>
       <NavItemActions itemId={item.id} collapsed={collapsed} />
     </div>
@@ -148,7 +151,7 @@ function NavItemComponent({
       <Tooltip>
         <TooltipTrigger asChild>
           <Link href={item.href} className="block">
-            <NavItemLabel item={item} collapsed={collapsed} depth={depth} />
+            <NavItemLabel item={item} collapsed={collapsed} depth={depth} selected={selected} />
           </Link>
         </TooltipTrigger>
         <TooltipContent side="right">{item.title}</TooltipContent>

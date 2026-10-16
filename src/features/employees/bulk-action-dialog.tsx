@@ -138,7 +138,18 @@ export function BulkActionDialog({
           </div>
         )}
 
-        {(action === "delete" || action === "deactivate") && (
+        {action === "delete" && (
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              Selected employees will be hidden from the directory and listed under Deleted Employees. You can restore them later.
+            </p>
+            <p>
+              The employee ID will not be assigned to a new person. The employee ID sequence stays unique even after the employee is deleted.
+            </p>
+          </div>
+        )}
+
+        {action === "deactivate" && (
           <p className="text-sm text-destructive">
             This action cannot be easily undone. Please confirm.
           </p>

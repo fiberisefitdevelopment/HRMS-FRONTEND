@@ -38,9 +38,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StatCard } from "@/components/ui/stat-card";
-import { formatAttendanceDate, formatMinutes, formatPunchTime } from "@/lib/attendance/format";
-import { AttendanceStatusBadge } from "@/features/attendance/attendance-status-badge";
 import { LeaveStatusBadge } from "@/features/leave/leave-status-badge";
+import { EmployeeAttendanceCalendar } from "./employee-attendance-calendar";
 import { formatLeaveDate, formatLeaveDays } from "@/lib/leave/format";
 import { Badge } from "@/components/ui/badge";
 import { Can } from "@/components/guards/permission-guard";
@@ -311,42 +310,16 @@ export function EmployeeProfileView({ employeeId }: EmployeeProfileViewProps) {
         <TabsContent value="attendance" className="mt-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">Attendance History</CardTitle>
+              <CardTitle className="text-base">Attendance</CardTitle>
               <p className="text-sm text-muted-foreground">
-                Punch records and working hours for this employee
+                Monthly calendar for this employee. Hover a day to see punch in and punch out.
               </p>
             </CardHeader>
             <CardContent>
-              {!attendance?.data?.length ? (
-                <EmptyState title="No attendance records" description="No attendance data from the API." />
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Punch In</TableHead>
-                      <TableHead>Punch Out</TableHead>
-                      <TableHead>Working Hours</TableHead>
-                      <TableHead>Late</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {attendance.data.map((record) => (
-                      <TableRow key={record.id}>
-                        <TableCell>{formatAttendanceDate(record.date)}</TableCell>
-                        <TableCell>
-                          <AttendanceStatusBadge status={record.attendanceStatus ?? record.status} />
-                        </TableCell>
-                        <TableCell>{formatPunchTime(record.punchIn)}</TableCell>
-                        <TableCell>{formatPunchTime(record.punchOut)}</TableCell>
-                        <TableCell>{formatMinutes(record.netWorkingMinutes ?? record.grossWorkingMinutes)}</TableCell>
-                        <TableCell>{formatMinutes(record.lateByMinutes)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
+              <EmployeeAttendanceCalendar
+                employeeProfileId={employee.id}
+                workingDays={employee.workingDays}
+              />
             </CardContent>
           </Card>
         </TabsContent>

@@ -22,6 +22,18 @@ export function useEmployeesQuery(params?: EmployeeListParams) {
   });
 }
 
+export function useDeletedEmployeesQuery(params?: EmployeeListParams) {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { hasPermission } = usePermissions();
+
+  return useQuery({
+    queryKey: QUERY_KEYS.employee.deleted(params),
+    queryFn: () => employeesService.listDeleted(params),
+    enabled: isAuthenticated && hasPermission("employee.delete"),
+    placeholderData: (prev) => prev,
+  });
+}
+
 export function useEmployeeQuery(id?: string) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { hasPermission, hasRole } = usePermissions();

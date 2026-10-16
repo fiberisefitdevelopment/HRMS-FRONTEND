@@ -11,6 +11,7 @@ import {
   CalendarDays,
   FileText,
   UserPlus,
+  UserX,
   Upload,
   UserCog,
   CalendarClock,
@@ -59,6 +60,13 @@ export const NAVIGATION_ITEMS: NavItem[] = [
         href: "/employees/new",
         icon: UserPlus,
         permissions: ["employee.create"],
+      },
+      {
+        id: "people-deleted",
+        title: "Deleted Employees",
+        href: "/employees/deleted",
+        icon: UserX,
+        permissions: ["employee.delete"],
       },
       {
         id: "people-import",

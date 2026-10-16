@@ -42,7 +42,7 @@ export function useDeleteEmployeeMutation() {
     mutationFn: (id: string) => employeesService.remove(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      toast.success("Employee deleted");
+      toast.success("Employee moved to Deleted Employees");
     },
     onError: (e) => toast.error(getErrorMessage(e)),
   });
@@ -155,6 +155,18 @@ export function useExportEmployeesMutation() {
   });
 }
 
+export function useRestoreEmployeeMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => employeesService.restore(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      toast.success("Employee restored");
+    },
+    onError: (e) => toast.error(getErrorMessage(e)),
+  });
+}
+
 export function useBulkActivateMutation() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -185,7 +197,7 @@ export function useBulkDeleteMutation() {
     mutationFn: (employeeIds: string[]) => employeesService.bulkDelete(employeeIds),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      toast.success("Bulk delete completed");
+      toast.success("Employees moved to Deleted Employees");
     },
     onError: (e) => toast.error(getErrorMessage(e)),
   });

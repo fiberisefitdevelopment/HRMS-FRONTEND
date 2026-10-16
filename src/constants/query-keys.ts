@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
   },
   employee: {
     all: (params?: unknown) => ["employees", params] as const,
+    deleted: (params?: unknown) => ["employees", "deleted", params] as const,
     detail: (id: string) => ["employees", id] as const,
     me: ["employees", "me"] as const,
     managers: ["employees", "manager-options"] as const,

@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef } from "react";
 import Link from "next/link";
 import { CalendarDays, Timer } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -106,25 +107,24 @@ function punchTooltipLabel(punch?: { punchIn?: string | null; punchOut?: string 
   return `In: ${formatPunchTime(punch.punchIn)}\nOut: ${formatPunchTime(punch.punchOut)}`;
 }
 
-function DayCard({
-  day,
-  events,
-  compact,
-  isToday,
-  interactive,
-  onRegularizeDate,
-  onCompOffDate,
-}: {
-  day: number;
-  events: CalendarDayEvent[];
-  compact: boolean;
-  isToday: boolean;
-  interactive?: boolean;
-  onRegularizeDate?: (date: string) => void;
-  onCompOffDate?: (date: string) => void;
-}) {
+const DayCard = forwardRef<
+  HTMLDivElement,
+  {
+    day: number;
+    events: CalendarDayEvent[];
+    compact: boolean;
+    isToday: boolean;
+    interactive?: boolean;
+    onRegularizeDate?: (date: string) => void;
+    onCompOffDate?: (date: string) => void;
+  }
+>(function DayCard(
+  { day, events, compact, isToday, interactive, onRegularizeDate, onCompOffDate },
+  ref
+) {
   return (
     <Card
+      ref={ref}
       className={cn(
         compact ? "min-h-[52px]" : "min-h-[80px]",
         isToday && "ring-1 ring-primary/40",
@@ -160,7 +160,7 @@ function DayCard({
       </CardContent>
     </Card>
   );
-}
+});
 
 function CalendarDayCell({
   dateKey,

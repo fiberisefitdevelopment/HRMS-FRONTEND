@@ -3,6 +3,7 @@ import type { ApiResponse, PaginatedResponse } from "@/types/api";
 import type {
   BulkResult,
   CreateEmployeePayload,
+  DeletedEmployee,
   Employee,
   EmployeeListParams,
   ImportResult,
@@ -42,6 +43,18 @@ export const employeesService = {
 
   async remove(id: string): Promise<void> {
     await apiClient.delete(`/employees/${id}`);
+  },
+
+  async listDeleted(params?: EmployeeListParams) {
+    const { data } = await apiClient.get<PaginatedResponse<DeletedEmployee>>("/employees/deleted", {
+      params: toListParams(params ?? {}),
+    });
+    return { data: data.data, meta: normalizeMeta(data.meta) };
+  },
+
+  async restore(id: string): Promise<Employee> {
+    const { data } = await apiClient.post<ApiResponse<Employee>>(`/employees/deleted/${id}/restore`);
+    return data.data;
   },
 
   async activate(id: string): Promise<Employee> {

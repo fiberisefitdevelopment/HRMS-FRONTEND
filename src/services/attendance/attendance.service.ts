@@ -36,7 +36,10 @@ export const attendanceService = {
     return { data: data.data, meta: normalizeMeta(data.meta) };
   },
 
-  async listByEmployee(employeeProfileId: string, params?: { page?: number; limit?: number }) {
+  async listByEmployee(
+    employeeProfileId: string,
+    params?: Omit<AttendanceListParams, "employeeProfileId">
+  ) {
     return this.list({ ...params, employeeProfileId });
   },
 

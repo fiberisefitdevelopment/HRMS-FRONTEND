@@ -175,6 +175,26 @@ export interface ImportResult {
   columns?: string[];
 }
 
+export interface DeletedEmployee {
+  id: string;
+  employeeProfileId: string;
+  userId: string;
+  employeeId: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  fullName: string;
+  email?: string | null;
+  phone?: string | null;
+  officialEmail?: string | null;
+  department?: EntityRef | null;
+  designation?: EntityRef | null;
+  employmentType?: EmploymentType | null;
+  joiningDate?: string | null;
+  profilePhoto?: string | null;
+  previousStatus?: EmployeeStatus | null;
+  deletedAt: string;
+}
+
 export interface BulkResult {
   success?: number;
   failed?: number;
